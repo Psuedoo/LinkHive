@@ -1,0 +1,88 @@
+@bg-color: rgb(23, 180, 159);
+@hover-bg: darken(@bg-color, 5%);
+@width: 100px;
+@height: @width/2;
+@margin: 10px;
+
+.triangle-base(@length) {
+  position: absolute;
+  content: "";
+  border-left: @length solid transparent;
+  border-right: @length solid transparent;
+  left: 0;
+  right: 0;
+}
+
+.triangle-top(@length, @triangle-bg) {
+  margin-bottom: -1px;
+  transition: border-bottom-color 0.5s ease;
+  bottom: 100%;
+  border-bottom: @length solid @triangle-bg;
+}
+
+.triangle-bottom(@length, @triangle-bg) {
+  margin-top: -1px;
+  transition: border-top-color 0.5s ease;
+  top: 100%;
+  border-top: @length solid @triangle-bg;
+}
+
+body {
+  padding: 50px;
+}
+
+.hexagon-list {
+  margin-bottom: @height/2 + @margin;
+  
+  &:nth-child(even) {
+    padding-left: @height + @margin/2;
+  }
+}
+
+.make-hexagon(@hexagon-bg, @hexagon-color) {
+  transition: background-color 0.5s ease;
+  width: @width;
+  height: @height;
+  background-color: @hexagon-bg;
+  position: relative;
+  float: left;
+  margin-right: @margin;
+  line-height: @height;
+  color: @hexagon-color;
+  text-align: center;
+  cursor: pointer;
+  
+  &:hover {
+    background-color: @hover-bg;
+    
+    &:before {
+      border-bottom-color: @hover-bg;
+    }
+    
+    &:after {
+      border-top-color: @hover-bg;
+    }
+  }
+  
+  &:before, &:after {
+    .triangle-base(@height);
+  }
+  
+  &:before {
+    .triangle-top(@height/2, @hexagon-bg);
+  }
+  
+  &:after {
+    .triangle-bottom(@height/2, @hexagon-bg);
+  }
+}
+
+.hexagon {
+  .make-hexagon(@bg-color, white);
+}
+
+.hexagon-inner {
+  .make-hexagon(white, @bg-color);
+  transform: scale(0.95);
+  z-index: 100;
+}
