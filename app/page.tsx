@@ -9,7 +9,7 @@ interface LinkType {
 
 function Link(LinkProps: LinkType) {
   return (
-    <div>
+    <div className="p-10 m-2 border border-yellow-300">
       <a href={LinkProps.url}>{LinkProps.title}</a>
     </div>
   );
@@ -19,7 +19,7 @@ async function Links() {
   let links = await prisma.link.findMany();
 
   return (
-    <div>
+    <div className="flex flex-row">
       {links.map((link) => (
         <Link key={link.id} {...link} />
       ))}
