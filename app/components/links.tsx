@@ -14,21 +14,21 @@ function Link(LinkProps: any) {
 
 export function Links() {
   const [remoteLinks, setLinks] = useState([]);
-  // const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const { data: session } = useSession();
   const user = session?.user;
 
   useEffect(() => {
-    // setLoading(true);
-    // setLoading(false);
-    if (!user) return;
-    allLinks({ userId: "clm3ss8zs0000f1oohg2tow1t" }).then((resp) => {
+    allLinks().then((resp) => {
       setLinks(resp);
+      setLoading(false);
     });
     console.log("user", user?.id);
-  }, [user, user?.id]);
+  }, [user?.id]);
 
   const links = remoteLinks.map((link) => <Link key={link.id} {...link} />);
 
-  return <div className="flex flex-row">{links}</div>;
+  return (
+    <div className="flex flex-row">{loading ? <p>Loading...</p> : links}</div>
+  );
 }
