@@ -3,12 +3,15 @@
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { allLinks } from "../services/link";
+import { default as NextLink } from "next/link";
 
 function Link(LinkProps: any) {
   return (
-    <div className="p-10 m-2 border border-yellow-300">
-      <a href={LinkProps.url}>{LinkProps.title}</a>
-    </div>
+    <NextLink href={LinkProps.url}>
+      <div className="m-2 border-8 rounded-md border-secondary-500 bg-secondary-400 p-10">
+        <p className="text-black">{LinkProps.title}</p>
+      </div>
+    </NextLink>
   );
 }
 
@@ -28,6 +31,8 @@ export function Links() {
   const links = remoteLinks.map((link) => <Link key={link.id} {...link} />);
 
   return (
-    <div className="flex flex-row">{loading ? <p>Loading...</p> : links}</div>
+    <div className="flex flex-row">
+      {loading ? <p className="text-black">Loading...</p> : links}
+    </div>
   );
 }
