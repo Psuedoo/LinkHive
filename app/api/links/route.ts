@@ -25,3 +25,26 @@ export async function GET(req: Request) {
     return NextResponse.json(links);
   }
 }
+
+export async function POST(req: Request) {
+  const session = await getServerSession(authOptions);
+  const userId = session?.user.id;
+
+  if (!userId) {
+    return NextResponse.error();
+  }
+
+  const body = await req.json();
+  const { title, url, authRequired } = body;
+
+  const link = await prisma.link.create({
+    data: {
+      url,
+      title,
+      authRequired,
+      User: { connect: { id: userId } },
+    },
+  });
+
+  return NextResponse.json(link);
+}

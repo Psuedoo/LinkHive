@@ -1,7 +1,7 @@
 "use client";
 
 import { useSession } from "next-auth/react";
-import { useEffect, useState } from "react";
+import { use, useEffect, useState } from "react";
 import { allLinks } from "../services/link";
 import { default as NextLink } from "next/link";
 
@@ -15,7 +15,7 @@ function Link(LinkProps: any) {
   );
 }
 
-export function Links() {
+export function LinksGrid() {
   const [remoteLinks, setLinks] = useState([]);
   const [loading, setLoading] = useState(true);
   const { data: session } = useSession();
@@ -33,6 +33,42 @@ export function Links() {
   return (
     <div className="flex flex-row">
       {loading ? <p className="text-black">Loading...</p> : links}
+      <CreateLink />
+    </div>
+  );
+}
+
+function CreateLinkModal(open: any) {
+  const [show, setShow] = useState(open);
+
+  useEffect(() => {
+    setShow(open);
+  }, [open]);
+
+  return (
+    <div>
+      {show ? (
+        <></>
+      ) : (
+        <div
+          onClick={() => setShow(false)}
+          className="fixed inset-0 flex flex-col justify-center items-center bg-gray-900 bg-opacity-50 z-50"
+        >
+          <div className="h-3/4 w-2/4 bg-white rounded-lg"></div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+export function CreateLink() {
+  const [open, setOpen] = useState(false);
+  return (
+    <div>
+      <CreateLinkModal open={open} />
+      <button className="text-black" onClick={() => setOpen(true)}>
+        Show modal
+      </button>
     </div>
   );
 }
