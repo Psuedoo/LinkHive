@@ -23,7 +23,6 @@ export function Links() {
       setLinks(resp);
       setLoading(false);
     });
-    console.log("user", user?.id);
   }, [user?.id]);
 
   const links = remoteLinks.map((link) => <Link key={link.id} {...link} />);
