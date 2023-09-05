@@ -26,7 +26,8 @@ export default function Navbar() {
   const { data: session } = useSession();
   return (
     <div className="flex flex-row place-content-evenly h-20 bg-primary-300 border-b-8 border-b-secondary-500 ">
-      <div className="flex items-center w-20">
+      <div className="flex items-center place-content-between w-5/6">
+        <h1 className="text-black">LinkHive</h1>
         {session ? <SignOutButton /> : <SignInButton />}
       </div>
     </div>
