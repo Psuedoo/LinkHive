@@ -1,16 +1,27 @@
 "use client";
 
 import { useSession } from "next-auth/react";
-import { use, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { allLinks, createLink } from "../services/link";
 import { default as NextLink } from "next/link";
-import { cursorTo } from "readline";
+import { Button, FloatButton, Form, Input, Modal, Switch } from "antd";
+import { PlusOutlined } from "@ant-design/icons";
 
 function Link(LinkProps: any) {
+  const [size, setSize] = useState("md");
+
   return (
     <NextLink href={LinkProps.url}>
-      <div className="m-2 border-8 rounded-md border-secondary-500 bg-secondary-400 p-10">
-        <p className="text-black">{LinkProps.title}</p>
+      <div
+        className="m-2 border-8 rounded-md border-secondary-500 bg-secondary-400 p-10"
+        onMouseEnter={() => {
+          setSize("lg");
+        }}
+        onMouseLeave={() => {
+          setSize("md");
+        }}
+      >
+        <p className={"text-black text-" + size}>{LinkProps.title}</p>
       </div>
     </NextLink>
   );
@@ -34,60 +45,6 @@ export function LinksGrid() {
   return (
     <div className="flex flex-row">
       {loading ? <p className="text-black">Loading...</p> : links}
-      {session ? <CreateLink /> : <></>}
-    </div>
-  );
-}
-
-function CreateLinkForm() {
-  const [title, setTitle] = useState("");
-  const [url, setUrl] = useState("");
-  const [authRequired, setAuthRequired] = useState(false);
-
-  const handleSubmit = (e: any) => {
-    e.preventDefault();
-    createLink({ title, url, authRequired });
-    alert("Link created!");
-  };
-
-  return (
-    <div className="flex flex-col items-center h-full">
-      <h1 className="text-black">Create a new link</h1>
-      <form
-        onSubmit={handleSubmit}
-        className="flex flex-col place-content-evenly h-4/5 p-5"
-      >
-        <div className="flex flex-col">
-          <label className="text-black">Title</label>
-          <input
-            type="text"
-            placeholder="Google"
-            className="text-black border rounded-lg"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-          />
-        </div>
-        <div className="flex flex-col">
-          <label className="text-black">URL</label>
-          <input
-            type="text"
-            placeholder="https://google.com"
-            className="text-black border rounded-lg"
-            value={url}
-            onChange={(e) => setUrl(e.target.value)}
-          />
-        </div>
-        <div className="flex flex-col">
-          <label className="text-black">Log in required?</label>
-          <input
-            type="checkbox"
-            className="text-black "
-            checked={authRequired}
-            onChange={(e) => setAuthRequired(e.target.checked)}
-          />
-        </div>
-        <input type="submit" className="text-black bg-primary-300 rounded-lg" />
-      </form>
     </div>
   );
 }
@@ -110,7 +67,7 @@ export function CreateLink() {
           >
             X
           </button>
-          <CreateLinkForm />
+          {/* <CreateLinkForm /> */}
         </div>
       </div>
     );
@@ -127,5 +84,95 @@ export function CreateLink() {
       </div>
       {open ? <LinkModalContent /> : <></>}
     </div>
+  );
+}
+
+export function CreateLinkButton() {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const showModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const handleOk = () => {
+    setIsModalOpen(false);
+  };
+
+  const handleCancel = () => {
+    setIsModalOpen(false);
+  };
+
+  const CreateLinkForm = () => {
+    const onFinish = (values: any) => {
+      const title = values.title;
+      const url = values.url;
+      let authRequired = values.authRequired;
+
+      if (authRequired === undefined || authRequired === true) {
+        authRequired = true;
+      }
+
+      createLink({ title, url, authRequired });
+      setIsModalOpen(false);
+    };
+
+    const onFinishFailed = (errorInfo: any) => {
+      console.log(errorInfo);
+    };
+
+    return (
+      <Form
+        name="link"
+        onFinish={onFinish}
+        onFinishFailed={onFinishFailed}
+        layout="vertical"
+      >
+        <Form.Item
+          label="Title"
+          name="title"
+          rules={[{ required: true, message: "Links have to have a title" }]}
+        >
+          <Input />
+        </Form.Item>
+        <Form.Item
+          label="URL"
+          name="url"
+          rules={[{ required: true, message: "Links have to have a URL" }]}
+        >
+          <Input />
+        </Form.Item>
+        <Form.Item label="Auth Required" name="authRequired">
+          <Switch defaultChecked />
+        </Form.Item>
+        <Form.Item>
+          <Button htmlType="submit">Submit</Button>
+        </Form.Item>
+      </Form>
+    );
+  };
+
+  const LinkModalContent = () => {
+    return (
+      <Modal
+        title="Add Link"
+        open={isModalOpen}
+        onOk={handleOk}
+        onCancel={handleCancel}
+        footer={[null]}
+      >
+        <CreateLinkForm />
+      </Modal>
+    );
+  };
+
+  return (
+    <>
+      <FloatButton
+        icon={<PlusOutlined />}
+        tooltip={<div>Add link</div>}
+        onClick={showModal}
+      />
+      <LinkModalContent />
+    </>
   );
 }
