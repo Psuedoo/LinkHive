@@ -34,8 +34,8 @@ Run `npm run dev`
 - You can have bookmarked links
 
 ### Roadmap
-- [ ] CRUD operations on links
-- [ ] Navigation
+- [x] CRUD operations on links
+- [x] Navigation
 - [ ] Docker support
 - [ ] Multi-user support
 - [ ] Hexagonal links
