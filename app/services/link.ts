@@ -19,3 +19,8 @@ export const updateLink = async (link: any) => {
   const { data } = await axios.put("/api/link/", link);
   return data;
 };
+
+export const deleteLink = async (link: any) => {
+  const { data } = await axios.delete(`/api/link/`, { data: { id: link.id } });
+  return data;
+};

@@ -19,7 +19,7 @@ function Link(LinkProps: any) {
     },
     {
       key: "2",
-      label: <DeleteLinkContextItem />,
+      label: <DeleteLinkContextItem {...LinkProps} />,
     },
   ];
 
@@ -100,7 +100,11 @@ export function LinkForm(props: any) {
         <Input />
       </Form.Item>
       <Form.Item label="Auth Required" name="authRequired">
-        <Switch checked={props.link.authRequired} />
+        {props.link ? (
+          <Switch checked={props.link.authRequired} />
+        ) : (
+          <Switch defaultChecked />
+        )}
       </Form.Item>
       <Form.Item>
         <Button htmlType="submit">Submit</Button>
