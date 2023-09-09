@@ -8,7 +8,7 @@ datasource db {
 }
 
 model Link {
-  id           String  @id @default(cuid())
+  id           String  @id @unique @default(cuid())
   url          String
   title        String
   authRequired Boolean @default(false)
@@ -44,7 +44,7 @@ model Session {
 }
 
 model User {
-  id            String    @id @default(cuid())
+  id            String    @id @unique @default(cuid())
   name          String?
   password      String?
   email         String?   @unique

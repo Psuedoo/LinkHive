@@ -1,4 +1,5 @@
-import { CreateLinkButton, LinksGrid } from "./components/links";
+import { CreateLinkButton } from "./components/createLinks";
+import { LinksGrid } from "./components/links";
 
 export default function Home() {
   return (

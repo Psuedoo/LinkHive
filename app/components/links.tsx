@@ -1,29 +1,36 @@
 "use client";
 
 import { useSession } from "next-auth/react";
-import { useEffect, useState } from "react";
-import { allLinks, createLink } from "../services/link";
+import { useEffect, useRef, useState } from "react";
+import { allLinks } from "../services/link";
 import { default as NextLink } from "next/link";
-import { Button, FloatButton, Form, Input, Modal, Switch } from "antd";
-import { PlusOutlined } from "@ant-design/icons";
+import { Button, Card, Dropdown, Form, Input, Space, Switch } from "antd";
+import { EditLinkContextItem } from "./editLinks";
+import { DeleteLinkContextItem } from "./deleteLinks";
+import type { FormInstance } from "antd/es/form";
 
 function Link(LinkProps: any) {
-  const [size, setSize] = useState("md");
+  const { data: session } = useSession();
+  const user = session?.user;
+  const items = [
+    {
+      key: "1",
+      label: <EditLinkContextItem {...LinkProps} />,
+    },
+    {
+      key: "2",
+      label: <DeleteLinkContextItem />,
+    },
+  ];
 
   return (
-    <NextLink href={LinkProps.url}>
-      <div
-        className="m-2 border-8 rounded-md border-secondary-500 bg-secondary-400 p-10"
-        onMouseEnter={() => {
-          setSize("lg");
-        }}
-        onMouseLeave={() => {
-          setSize("md");
-        }}
-      >
-        <p className={"text-black text-" + size}>{LinkProps.title}</p>
-      </div>
-    </NextLink>
+    <>
+      <Dropdown menu={{ items }} trigger={user ? ["contextMenu"] : []}>
+        <NextLink href={LinkProps.url}>
+          <Card>{LinkProps.title}</Card>
+        </NextLink>
+      </Dropdown>
+    </>
   );
 }
 
@@ -43,136 +50,61 @@ export function LinksGrid() {
   const links = remoteLinks.map((link) => <Link key={link.id} {...link} />);
 
   return (
-    <div className="flex flex-row">
-      {loading ? <p className="text-black">Loading...</p> : links}
-    </div>
-  );
-}
-
-export function CreateLink() {
-  const [open, setOpen] = useState(false);
-  useEffect(() => {
-    setOpen(open);
-  }, [open]);
-
-  const LinkModalContent = () => {
-    return (
-      <div className="fixed inset-0 flex flex-col justify-center items-center bg-gray-900 bg-opacity-50 z-50">
-        <div className="flex flex-col h-3/4 w-2/4 bg-white rounded-lg">
-          <button
-            onClick={() => {
-              setOpen(false);
-            }}
-            className="flex text-black place-self-end m-5"
-          >
-            X
-          </button>
-          {/* <CreateLinkForm /> */}
-        </div>
-      </div>
-    );
-  };
-
-  return (
-    <div className="flex items-center">
-      <div
-        onClick={() => setOpen(true)}
-        style={{ cursor: "pointer" }}
-        className="flex justify-center items-center bg-secondary-400 h-10 w-10 rounded-3xl"
-      >
-        <p className="text-black">+</p>
-      </div>
-      {open ? <LinkModalContent /> : <></>}
-    </div>
-  );
-}
-
-export function CreateLinkButton() {
-  const [isModalOpen, setIsModalOpen] = useState(false);
-
-  const showModal = () => {
-    setIsModalOpen(true);
-  };
-
-  const handleOk = () => {
-    setIsModalOpen(false);
-  };
-
-  const handleCancel = () => {
-    setIsModalOpen(false);
-  };
-
-  const CreateLinkForm = () => {
-    const onFinish = (values: any) => {
-      const title = values.title;
-      const url = values.url;
-      let authRequired = values.authRequired;
-
-      if (authRequired === undefined || authRequired === true) {
-        authRequired = true;
-      }
-
-      createLink({ title, url, authRequired });
-      setIsModalOpen(false);
-    };
-
-    const onFinishFailed = (errorInfo: any) => {
-      console.log(errorInfo);
-    };
-
-    return (
-      <Form
-        name="link"
-        onFinish={onFinish}
-        onFinishFailed={onFinishFailed}
-        layout="vertical"
-      >
-        <Form.Item
-          label="Title"
-          name="title"
-          rules={[{ required: true, message: "Links have to have a title" }]}
-        >
-          <Input />
-        </Form.Item>
-        <Form.Item
-          label="URL"
-          name="url"
-          rules={[{ required: true, message: "Links have to have a URL" }]}
-        >
-          <Input />
-        </Form.Item>
-        <Form.Item label="Auth Required" name="authRequired">
-          <Switch defaultChecked />
-        </Form.Item>
-        <Form.Item>
-          <Button htmlType="submit">Submit</Button>
-        </Form.Item>
-      </Form>
-    );
-  };
-
-  const LinkModalContent = () => {
-    return (
-      <Modal
-        title="Add Link"
-        open={isModalOpen}
-        onOk={handleOk}
-        onCancel={handleCancel}
-        footer={[null]}
-      >
-        <CreateLinkForm />
-      </Modal>
-    );
-  };
-
-  return (
     <>
-      <FloatButton
-        icon={<PlusOutlined />}
-        tooltip={<div>Add link</div>}
-        onClick={showModal}
-      />
-      <LinkModalContent />
+      {loading ? (
+        <div>Loading...</div>
+      ) : (
+        <Space size={[8, 16]} wrap>
+          {links}
+        </Space>
+      )}
     </>
+  );
+}
+
+export function LinkForm(props: any) {
+  const formRef = useRef<FormInstance>(null);
+
+  useEffect(() => {
+    if (formRef.current && props.link) {
+      formRef.current?.setFieldsValue({
+        title: props.link.title,
+        url: props.link.url,
+        authRequired: props.link.authRequired,
+      });
+    }
+  }, [props, props.link, formRef]);
+
+  return (
+    <Form
+      name="link"
+      onFinish={props.onFinish}
+      onFinishFailed={props.onFinishFailed}
+      layout="vertical"
+      ref={formRef}
+    >
+      <Form.Item
+        label="Title"
+        name="title"
+        rules={[{ required: true, message: "Links have to have a title" }]}
+        initialValue={props.title}
+      >
+        <Input value="test" />
+      </Form.Item>
+      <Form.Item
+        label="URL"
+        name="url"
+        rules={[{ required: true, message: "Links have to have a URL" }]}
+        initialValue={props.url}
+      >
+        <Input />
+      </Form.Item>
+      <Form.Item label="Auth Required" name="authRequired">
+        <Switch checked={props.link.authRequired} />
+      </Form.Item>
+      <Form.Item>
+        <Button htmlType="submit">Submit</Button>
+      </Form.Item>
+    </Form>
   );
 }
