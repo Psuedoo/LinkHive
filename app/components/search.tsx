@@ -36,8 +36,12 @@ export function SearchBar() {
       placeholder="Search"
       allowClear
       onSearch={onSearch}
-      style={{ width: 600, paddingTop: 20 }}
-      enterButton
+      style={{
+        width: 300,
+      }}
+      bordered={false}
+      size="large"
+      className="border-b-2 border-black rounded-lg"
     />
   );
 }
