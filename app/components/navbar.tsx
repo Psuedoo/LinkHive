@@ -1,5 +1,6 @@
 "use client";
 import { signIn, signOut, useSession } from "next-auth/react";
+import { SearchBar } from "./search";
 
 function NavbarButton({ func, children }: { func: any; children: any }) {
   return (
@@ -28,6 +29,7 @@ export default function Navbar() {
     <div className="flex flex-row place-content-evenly h-20 bg-primary-300 border-b-8 border-b-secondary-500 ">
       <div className="flex items-center place-content-between w-5/6">
         <h1 className="text-black">LinkHive</h1>
+        <SearchBar />
         {session ? <SignOutButton /> : <SignInButton />}
       </div>
     </div>

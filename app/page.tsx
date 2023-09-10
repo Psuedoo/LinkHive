@@ -1,11 +1,15 @@
+import { Space } from "antd";
 import { CreateLinkButton } from "./components/createLinks";
 import { LinksGrid } from "./components/links";
+import { SearchBar } from "./components/search";
 
 export default function Home() {
   return (
-    <main className="flex min-h-screen flex-col items-center p-24 bg-primary-100">
-      <LinksGrid />
-      <CreateLinkButton />
+    <main className="flex h-screen w-screen flex-col items-center bg-primary-100">
+      <Space direction="vertical" size="large" className="pt-20">
+        <LinksGrid />
+        <CreateLinkButton />
+      </Space>
     </main>
   );
 }
