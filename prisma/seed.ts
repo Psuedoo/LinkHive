@@ -1,13 +1,15 @@
 import { PrismaClient } from "@prisma/client";
 import { LinkType } from "@/app/components/links";
 import { UserType } from "@/app/components/user";
+import bcrypt from "bcryptjs";
 
 const prisma = new PrismaClient();
 
 async function main() {
+  const password = await bcrypt.hash("admin", 10);
   const user: UserType = {
     name: "admin",
-    password: "admin",
+    password: password,
     admin: true,
   };
   const createdUser = await prisma.user.upsert({
