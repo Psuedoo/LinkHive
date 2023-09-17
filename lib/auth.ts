@@ -2,17 +2,20 @@ import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import { prisma } from "@/lib/prisma";
 import type { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
+import { verifyPassword } from "@/app/services/users";
 
 export const authOptions: NextAuthOptions = {
   callbacks: {
     async session({ session, token }) {
       if (session?.user) {
+        session.user = token.user;
         session.user.id = token.uid;
       }
       return session;
     },
     async jwt({ user, token }) {
       if (user) {
+        token.user = user;
         token.uid = user.id;
       }
       return token;
@@ -37,7 +40,12 @@ export const authOptions: NextAuthOptions = {
           },
         });
 
-        if (user && user.password === credentials.password) {
+        if (user) {
+          const isPasswordValid = await verifyPassword(
+            credentials.password,
+            user.password
+          );
+          if (!isPasswordValid) return null;
           return user;
         } else {
           return null;

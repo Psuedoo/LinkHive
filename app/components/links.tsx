@@ -9,6 +9,14 @@ import { EditLinkContextItem } from "./editLinks";
 import { DeleteLinkContextItem } from "./deleteLinks";
 import type { FormInstance } from "antd/es/form";
 
+export type LinkType = {
+  id?: string;
+  title: string;
+  url: string;
+  authRequired: boolean;
+  userId?: string;
+};
+
 function Link(LinkProps: any) {
   const { data: session } = useSession();
   const user = session?.user;
