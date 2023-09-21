@@ -30,13 +30,19 @@ NEXTAUTH_SECRET=say_lalisa_love_me_lalisa_love_me_hey
 Run `npm run dev`
 
 
+### To dockerize the application 
+```
+docker build -t linkhive-app .
+docker run -p 3000:3000 linkhive-app
+```
+
 ### Features
 - You can have bookmarked links
 
 ### Roadmap
 - [x] CRUD operations on links
 - [x] Navigation
-- [ ] Docker support
+- [x] Docker support
 - [ ] Multi-user support
 - [ ] Hexagonal links
 - [ ] Status checking for links
