@@ -22,10 +22,10 @@ export default function Page() {
   }
 
   return (
-    <main className="flex h-screen w-screen flex-col items-center bg-primary-100">
+    <main className="flex h-screen w-screen flex-col items-center bg-background">
       <Space direction="vertical" size="large" className="pt-20">
-        <h1 className="text-black">Username: {session?.user?.name}</h1>
-        <h1 className="text-black">Profile page</h1>
+        <h1 className="text-text">Username: {session?.user?.name}</h1>
+        <h1 className="text-text">Profile page</h1>
       </Space>
     </main>
   );

@@ -35,7 +35,9 @@ function Link(LinkProps: any) {
     <>
       <Dropdown menu={{ items }} trigger={user ? ["contextMenu"] : []}>
         <NextLink href={LinkProps.url}>
-          <Card>{LinkProps.title}</Card>
+          <Card className="bg-primary border-none text-text transition duration-250 ease-in-out transform hover:-translate-y-1 hover:scale-110 ">
+            {LinkProps.title}
+          </Card>
         </NextLink>
       </Dropdown>
     </>
@@ -108,11 +110,7 @@ export function LinkForm(props: any) {
         <Input />
       </Form.Item>
       <Form.Item label="Auth Required" name="authRequired">
-        {props.link ? (
-          <Switch checked={props.link.authRequired} />
-        ) : (
-          <Switch defaultChecked />
-        )}
+        <Switch defaultChecked={props.link ? props.link.authRequired : false} />
       </Form.Item>
       <Form.Item>
         <Button htmlType="submit">Submit</Button>

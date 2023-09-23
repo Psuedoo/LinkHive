@@ -38,10 +38,9 @@ export function SearchBar() {
       onSearch={onSearch}
       style={{
         width: 300,
+        borderRadius: "0.5rem",
       }}
-      bordered={false}
       size="large"
-      className="border-b-2 border-black rounded-lg"
     />
   );
 }

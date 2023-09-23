@@ -11,7 +11,7 @@ function NavbarButton({ func, children }: { func: any; children: any }) {
     <button
       onClick={() => func()}
       className={
-        "flex justify-center items-center h-10 w-20 bg-secondary-500 rounded-lg text-black"
+        "flex justify-center items-center h-10 w-20 bg-secondary-500 rounded-lg"
       }
     >
       {children}
@@ -95,10 +95,10 @@ export default function Navbar() {
   }, [session]);
 
   return (
-    <div className="flex flex-row place-content-evenly h-20 bg-primary-300 border-b-8 border-b-secondary-500 ">
+    <div className="flex flex-row place-content-evenly h-20 bg-background ">
       <div className="flex items-center place-content-between w-5/6">
         <NextLink href="/">
-          <h1 className="text-black">LinkHive</h1>
+          <h1 className="text-text">LinkHive</h1>
         </NextLink>
         <SearchBar />
         {loading ? <>loading</> : <>{authButton}</>}
