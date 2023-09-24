@@ -1,9 +1,10 @@
-import { PrismaClient } from "@prisma/client";
-import { LinkType } from "@/app/components/links";
+import { Link, PrismaClient } from "@prisma/client";
 import { UserType } from "@/app/components/user";
 import bcrypt from "bcryptjs";
 
 const prisma = new PrismaClient();
+
+type NewLinkType = Omit<Link, "id">;
 
 async function main() {
   const password = await bcrypt.hash("admin", 10);
@@ -20,7 +21,7 @@ async function main() {
     create: { ...user },
   });
 
-  const link: LinkType = {
+  const link: NewLinkType = {
     url: "https://google.com/",
     title: "Google - Public (seeded)",
     authRequired: false,
