@@ -55,17 +55,6 @@ export default function SignIn() {
             Sign in
           </button>
         </form>
-        {/* <Form name="user" layout="vertical" onFinish={onFinish}>
-          <Form.Item label="Username" name="login-username">
-            <Input />
-          </Form.Item>
-          <Form.Item label="Password" name="login-password">
-            <Input type="password" />
-          </Form.Item>
-          <Form.Item>
-            <Button htmlType="submit">Sign in</Button>
-          </Form.Item>
-        </Form> */}
       </div>
     </div>
   );

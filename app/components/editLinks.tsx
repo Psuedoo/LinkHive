@@ -4,10 +4,11 @@ import { useEffect, useState } from "react";
 import { Modal } from "antd";
 import { EditFilled } from "@ant-design/icons";
 import { LinkForm } from "./links";
-import { useSession } from "next-auth/react";
-import { updateLink } from "../services/link";
+import { useRouter } from "next/navigation";
+import { updateLink } from "@/lib/api/links/mutations";
 
 export function EditLinkContextItem(props: any) {
+  const router = useRouter();
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const showModal = () => {
@@ -20,17 +21,18 @@ export function EditLinkContextItem(props: any) {
 
   const EditLinkForm = () => {
     const onFinish = (values: any) => {
-      const id = props.id;
-      const title = values.title;
-      const url = values.url;
-      let authRequired = values.authRequired;
+      const id = props.id as string;
+      const title = values.title as string;
+      const url = values.url as string;
+      let authRequired = values.authRequired as boolean;
 
       if (authRequired === undefined || authRequired === true) {
         authRequired = true;
       }
 
-      updateLink({ id, title, url, authRequired });
+      updateLink({ link: { id, title, url, authRequired } });
       setIsModalOpen(false);
+      router.refresh();
     };
 
     const onFinishFailed = (errorInfo: any) => {
