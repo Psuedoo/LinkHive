@@ -1,38 +1,50 @@
 "use client";
 
-import { useSession } from "next-auth/react";
-import { useEffect, useRef } from "react";
+import { useState } from "react";
 import { default as NextLink } from "next/link";
-import { Button, Card, Dropdown, Form, Input, Space, Switch } from "antd";
-import { EditLinkContextItem } from "./editLinks";
-import { DeleteLinkContextItem } from "./deleteLinks";
-import type { FormInstance } from "antd/es/form";
+import { EditLinkDialogContent } from "./editLinks";
+import DeleteLinkConfirmationDialog from "./deleteLinks";
 import { Link } from "@prisma/client";
-import { useRouter } from "next/navigation";
+import { Button } from "@/components/ui/button";
+import {
+  ContextMenu,
+  ContextMenuTrigger,
+  ContextMenuContent,
+  ContextMenuItem,
+} from "@/components/ui/context-menu";
+import { Dialog, DialogTrigger } from "@/components/ui/dialog";
+import { AlertDialog } from "@/components/ui/alert-dialog";
+import { AlertDialogTrigger } from "@radix-ui/react-alert-dialog";
 
 function Link({ link }: { link: Link }) {
-  const { data: session } = useSession();
-  const user = session?.user;
-  const items = [
-    {
-      key: "1",
-      label: <EditLinkContextItem {...link} />,
-    },
-    {
-      key: "2",
-      label: <DeleteLinkContextItem link={link} />,
-    },
-  ];
+  const [open, setOpen] = useState(false);
 
   return (
     <>
-      <Dropdown menu={{ items }} trigger={user ? ["contextMenu"] : []}>
-        <NextLink href={link.url}>
-          <Card className="bg-primary border-none text-text transition duration-250 ease-in-out transform hover:-translate-y-1 hover:scale-110">
-            {link.title}
-          </Card>
-        </NextLink>
-      </Dropdown>
+      <Dialog open={open} onOpenChange={setOpen}>
+        <AlertDialog>
+          <ContextMenu>
+            <ContextMenuTrigger>
+              <Button
+                className="transition duration-250 ease-in-out transform hover:-translate-y-1 hover:scale-110"
+                asChild
+              >
+                <NextLink href={link.url}>{link.title}</NextLink>
+              </Button>
+            </ContextMenuTrigger>
+            <ContextMenuContent>
+              <DialogTrigger asChild>
+                <ContextMenuItem>Edit</ContextMenuItem>
+              </DialogTrigger>
+              <AlertDialogTrigger asChild>
+                <ContextMenuItem>Delete</ContextMenuItem>
+              </AlertDialogTrigger>
+            </ContextMenuContent>
+          </ContextMenu>
+          <EditLinkDialogContent setOpen={setOpen} link={link} />
+          <DeleteLinkConfirmationDialog link={link} />
+        </AlertDialog>
+      </Dialog>
     </>
   );
 }
@@ -42,53 +54,5 @@ export function LinksGrid({ links }: { links: Link[] }) {
     <Link key={link.id} link={link} />
   ));
 
-  return (
-    <>
-      <Space size={[8, 16]} wrap>
-        {linkComponents}
-      </Space>
-    </>
-  );
-}
-
-export function LinkForm({
-  link,
-  onFinish,
-  onFinishFailed,
-}: {
-  link: Link | null;
-  onFinish: (values: any) => void;
-  onFinishFailed: (errorInfo: any) => void;
-}) {
-  return (
-    <Form
-      name="link"
-      onFinish={onFinish}
-      onFinishFailed={onFinishFailed}
-      layout="vertical"
-    >
-      <Form.Item
-        label="Title"
-        name="title"
-        rules={[{ required: true, message: "Links have to have a title" }]}
-        initialValue={link?.title}
-      >
-        <Input />
-      </Form.Item>
-      <Form.Item
-        label="URL"
-        name="url"
-        rules={[{ required: true, message: "Links have to have a URL" }]}
-        initialValue={link?.url}
-      >
-        <Input />
-      </Form.Item>
-      <Form.Item label="Auth Required" name="authRequired">
-        <Switch defaultChecked={link ? link.authRequired : false} />
-      </Form.Item>
-      <Form.Item>
-        <Button htmlType="submit">Submit</Button>
-      </Form.Item>
-    </Form>
-  );
+  return <div className="flex">{linkComponents}</div>;
 }

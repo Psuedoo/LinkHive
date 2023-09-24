@@ -1,7 +1,9 @@
 "use client";
-import Search, { SearchProps } from "antd/es/input/Search";
+import { Input } from "@/components/ui/input";
+import { useState } from "react";
 
 export function SearchBar() {
+  const [search, setSearch] = useState("");
   function getUrl(userInput: string) {
     const reddit = {
       prefix: "/r ",
@@ -26,21 +28,23 @@ export function SearchBar() {
     return `${baseUrl}${userInput}`;
   }
 
-  const onSearch: SearchProps["onSearch"] = (value, _e, info) => {
-    if (info?.source === "clear") return;
-    window.location.assign(getUrl(value));
-  };
+  function handleSubmit() {
+    window.location.assign(getUrl(search));
+  }
 
   return (
-    <Search
-      placeholder="Search"
-      allowClear
-      onSearch={onSearch}
-      style={{
-        width: 300,
-        borderRadius: "0.5rem",
-      }}
-      size="large"
-    />
+    <div className="flex w-full max-w-md items-center space-x-2">
+      <Input
+        type="email"
+        placeholder="Search"
+        value={search}
+        onChange={(val) => setSearch(val.target.value)}
+        onKeyDown={(e) => {
+          if (e.key === "Enter") {
+            handleSubmit();
+          }
+        }}
+      />
+    </div>
   );
 }
