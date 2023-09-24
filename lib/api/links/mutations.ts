@@ -19,7 +19,7 @@ export async function createLink(link: CreateLinkInput) {
         ...link,
         User: {
           connect: {
-            id: user?.id,
+            id: userId,
           },
         },
       },
