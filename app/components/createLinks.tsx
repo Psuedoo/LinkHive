@@ -1,13 +1,15 @@
 "use client";
 
 import { useState } from "react";
-import { createLink } from "../services/link";
 import { FloatButton, Modal } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import { LinkForm } from "./links";
+import { useRouter } from "next/navigation";
+import { createLink } from "@/lib/api/links/mutations";
 
 export function CreateLinkButton() {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const router = useRouter();
 
   const showModal = () => {
     setIsModalOpen(true);
@@ -29,6 +31,7 @@ export function CreateLinkButton() {
 
       createLink({ title, url, authRequired });
       setIsModalOpen(false);
+      router.refresh();
     };
 
     const onFinishFailed = (errorInfo: any) => {
