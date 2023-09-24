@@ -1,6 +1,6 @@
 "use server";
 import { Link, User } from "@prisma/client";
-import { getCurrentUser, isCurrentUserAdmin } from "@/lib/session";
+import { getCurrentUser } from "@/lib/session";
 import { prisma } from "@/lib/prisma";
 import { encryptPassword } from "@/app/services/users";
 

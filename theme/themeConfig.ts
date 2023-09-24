@@ -1,12 +1,10 @@
-import type { ThemeConfig } from "antd";
-
 export const bgColor = "#100019";
 export const primaryColor = "#fd3ae3";
 export const secondaryColor = "#281526";
 export const accentColor = "#ed0259";
 export const textColor = "#f6e6ff";
 
-const theme: ThemeConfig = {
+const theme = {
   components: {
     Button: {
       colorPrimaryHover: primaryColor,

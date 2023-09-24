@@ -1,10 +1,6 @@
 "use client";
-import { signIn, signOut, useSession } from "next-auth/react";
-import { SearchBar } from "./search";
-import { Dropdown } from "antd";
-import { UserOutlined } from "@ant-design/icons";
+import { signIn, signOut } from "next-auth/react";
 import NextLink from "next/link";
-import { useEffect, useState } from "react";
 import { ModeToggle } from "@/components/themeToggle";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { AvatarIcon } from "@radix-ui/react-icons";
