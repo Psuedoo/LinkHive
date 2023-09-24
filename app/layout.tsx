@@ -6,6 +6,7 @@ import Navbar from "./components/navbar";
 import StyledComponentsRegistry from "../lib/AntdRegistry";
 import { ConfigProvider } from "antd";
 import theme from "@/theme/themeConfig";
+import { useSession } from "next-auth/react";
 
 const inter = Inter({ subsets: ["latin"] });
 

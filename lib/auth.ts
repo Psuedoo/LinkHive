@@ -5,7 +5,21 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import { verifyPassword } from "@/app/services/users";
 
 export const authOptions: NextAuthOptions = {
+  pages: {
+    signIn: "/auth/signin",
+  },
   callbacks: {
+    async signIn({ user, account, profile, credentials }) {
+      const isAllowedToSignIn = true;
+      if (isAllowedToSignIn) {
+        return true;
+      } else {
+        // Return false to display a default error message
+        return false;
+        // Or you can return a URL to redirect to:
+        // return '/unauthorized'
+      }
+    },
     async session({ session, token }) {
       if (session?.user) {
         session.user = token.user;

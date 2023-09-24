@@ -95,7 +95,7 @@ export default function Navbar() {
   }, [session]);
 
   return (
-    <div className="flex flex-row place-content-evenly h-20 bg-background ">
+    <div className="flex flex-row place-content-evenly h-20 bg-background">
       <div className="flex items-center place-content-between w-5/6">
         <NextLink href="/">
           <h1 className="text-text">LinkHive</h1>

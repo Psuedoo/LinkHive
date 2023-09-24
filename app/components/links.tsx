@@ -35,7 +35,7 @@ function Link(LinkProps: any) {
     <>
       <Dropdown menu={{ items }} trigger={user ? ["contextMenu"] : []}>
         <NextLink href={LinkProps.url}>
-          <Card className="bg-primary border-none text-text transition duration-250 ease-in-out transform hover:-translate-y-1 hover:scale-110 ">
+          <Card className="bg-primary border-none text-text transition duration-250 ease-in-out transform hover:-translate-y-1 hover:scale-110">
             {LinkProps.title}
           </Card>
         </NextLink>
