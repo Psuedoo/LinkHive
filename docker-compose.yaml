@@ -1,0 +1,26 @@
+version: '3'
+services:
+  # Service for building the application
+  build:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: link-hive  # Replace with a suitable name for the builder image
+    container_name: link-hive-container
+    working_dir: /app
+    command: npm run build  # You should define a build script in your package.json
+
+  # Service for running the application
+  app:
+    image: your-app-image  # Replace with a suitable name for the application image
+    container_name: your-app
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      - NEXTAUTH_URL=http://localhost:3000
+      - NEXTAUTH_SECRET=say_lalisa_love_me_lalisa_love_me_hey
+    ports:
+      - "3000:3000"  # Map port 3000 inside the container to port 3000 on the host
+    depends_on:
+      - build  # Make sure the build service is finished before starting the app
