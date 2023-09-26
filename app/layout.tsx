@@ -3,12 +3,9 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { NextAuthProvider } from "./providers";
 import Navbar from "./components/navbar";
-import StyledComponentsRegistry from "../lib/AntdRegistry";
-import { ConfigProvider } from "antd";
-import theme from "@/theme/themeConfig";
-import { useSession } from "next-auth/react";
 import { getCurrentUser } from "@/lib/session";
-
+import { Toaster } from "@/components/ui/toaster";
+import { ThemeProvider } from "@/components/theme-provider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -24,15 +21,21 @@ export default async function RootLayout({
   const user = await getCurrentUser();
   return (
     <html lang="en">
-      <body className={inter.className + " bg-background"}>
-        <NextAuthProvider>
-          <StyledComponentsRegistry>
-            <ConfigProvider theme={theme}>
+      <body className={inter.className}>
+        <div className="bg-background">
+          <NextAuthProvider>
+            <ThemeProvider
+              attribute="class"
+              defaultTheme="system"
+              enableSystem
+              disableTransitionOnChange
+            >
               <Navbar user={user} />
               {children}
-            </ConfigProvider>
-          </StyledComponentsRegistry>
-        </NextAuthProvider>
+            </ThemeProvider>
+          </NextAuthProvider>
+          <Toaster />
+        </div>
       </body>
     </html>
   );

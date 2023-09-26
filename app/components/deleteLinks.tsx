@@ -1,34 +1,42 @@
 "use client";
 
-import { DeleteFilled } from "@ant-design/icons";
-import { Popconfirm, message } from "antd";
 import { useRouter } from "next/navigation";
 import { Link } from "@prisma/client";
 import { deleteLink } from "@/lib/api/links/mutations";
+import {
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
+import { useToast } from "@/components/ui/use-toast";
 
-export function DeleteLinkContextItem({ link }: { link: Link }) {
+export default function DeleteLinkConfirmationDialog({ link }: { link: Link }) {
   const router = useRouter();
-  const confirm = () => {
+  const { toast } = useToast();
+  const handleSubmit = () => {
     deleteLink(link.id);
-    message.success("Link deleted");
+    toast({
+      title: `You deleted '${link.title}'`,
+    });
     router.refresh();
   };
 
-  const cancel = () => {
-    message.error("Canceled");
-  };
-
   return (
-    <Popconfirm
-      title="Delete the link"
-      description="Are you sure you want to delete this link?"
-      onConfirm={confirm}
-      onCancel={cancel}
-      okText="Yes"
-      cancelText="No"
-      placement="bottom"
-    >
-      <DeleteFilled /> Delete
-    </Popconfirm>
+    <AlertDialogContent>
+      <AlertDialogHeader>
+        <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+        <AlertDialogDescription>
+          This action cannot be undone. This will permanently this link.
+        </AlertDialogDescription>
+      </AlertDialogHeader>
+      <AlertDialogFooter>
+        <AlertDialogCancel>Cancel</AlertDialogCancel>
+        <AlertDialogAction onClick={handleSubmit}>Continue</AlertDialogAction>
+      </AlertDialogFooter>
+    </AlertDialogContent>
   );
 }

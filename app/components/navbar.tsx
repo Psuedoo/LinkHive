@@ -1,10 +1,17 @@
 "use client";
-import { signIn, signOut, useSession } from "next-auth/react";
-import { SearchBar } from "./search";
-import { Avatar, Dropdown } from "antd";
-import { UserOutlined } from "@ant-design/icons";
+import { signIn, signOut } from "next-auth/react";
 import NextLink from "next/link";
-import { useEffect, useState } from "react";
+import { ModeToggle } from "@/components/themeToggle";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { AvatarIcon } from "@radix-ui/react-icons";
+import {
+  DropdownMenu,
+  DropdownMenuTrigger,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuLabel,
+} from "@/components/ui/dropdown-menu";
 
 function NavbarButton({ func, children }: { func: any; children: any }) {
   return (
@@ -25,10 +32,8 @@ export function SignInButton(props: any) {
 
 function ProfileContextItem() {
   return (
-    <NextLink href="/profile">
-      <div className="flex flex-col">
-        <h1>Profile</h1>
-      </div>
+    <NextLink href="/profile" className="w-full">
+      <span>Profile</span>
     </NextLink>
   );
 }
@@ -39,46 +44,54 @@ function SignOutContextItem() {
       onClick={() => {
         signOut();
       }}
-      className="flex flex-col"
+      className="w-full"
     >
       <h1>Sign Out</h1>
     </div>
   );
 }
 
+function AdminContextItem() {
+  return (
+    <NextLink href="/admin" className="w-full">
+      <h1>Admin</h1>
+    </NextLink>
+  );
+}
+
 export default function Navbar(props: any) {
   function AvatarButton() {
-    let items = [
-      {
-        key: "1",
-        label: <ProfileContextItem />,
-      },
-    ];
-    const isAdmin = props.user.admin;
-
-    if (isAdmin) {
-      items.push({
-        key: "2",
-        label: (
-          <>
-            <NextLink href="/admin">
-              <h1>Admin</h1>
-            </NextLink>
-          </>
-        ),
-      });
-    }
-
-    items.push({
-      key: `${items.length + 1}`,
-      label: <SignOutContextItem />,
-    });
-
     return (
       <>
-        <Dropdown menu={{ items }} placement="bottom" trigger={["click"]}>
-          <Avatar size="large" icon={<UserOutlined />} />
-        </Dropdown>
+        <DropdownMenu>
+          <DropdownMenuTrigger>
+            <Avatar>
+              <AvatarImage src={props.user.image} />
+              <AvatarFallback>
+                <AvatarIcon />
+              </AvatarFallback>
+            </Avatar>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end">
+            <DropdownMenuLabel>{props.user.name}</DropdownMenuLabel>
+            <DropdownMenuSeparator />
+
+            <DropdownMenuItem>
+              <ProfileContextItem />
+            </DropdownMenuItem>
+            {props.user.admin ? (
+              <DropdownMenuItem>
+                <AdminContextItem />
+              </DropdownMenuItem>
+            ) : (
+              <> </>
+            )}
+            <DropdownMenuSeparator />
+            <DropdownMenuItem>
+              <SignOutContextItem />
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
       </>
     );
   }
@@ -88,8 +101,10 @@ export default function Navbar(props: any) {
         <NextLink href="/">
           <h1 className="text-text">LinkHive</h1>
         </NextLink>
-        <SearchBar />
-        {props.user ? <AvatarButton /> : <SignInButton />}
+        <div className="flex justify-center items-center">
+          <ModeToggle />
+          {props.user ? <AvatarButton /> : <SignInButton />}
+        </div>
       </div>
     </div>
   );

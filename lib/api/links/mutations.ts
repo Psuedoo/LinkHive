@@ -1,7 +1,8 @@
 "use server";
-import { Link } from "@prisma/client";
+import { Link, User } from "@prisma/client";
 import { getCurrentUser } from "@/lib/session";
 import { prisma } from "@/lib/prisma";
+import { encryptPassword } from "@/app/services/users";
 
 type UpdateLinkInput = Omit<Link, "userId">;
 type CreateLinkInput = Omit<Link, "id" | "userId">;
@@ -19,7 +20,7 @@ export async function createLink(link: CreateLinkInput) {
         ...link,
         User: {
           connect: {
-            id: user?.id,
+            id: userId,
           },
         },
       },
@@ -61,5 +62,26 @@ export async function updateLink({ link }: { link: UpdateLinkInput }) {
     });
 
     return updatedLink;
+  }
+}
+
+type NewUserType = Pick<User, "name" | "password" | "admin">;
+
+export async function createUser({ user }: { user: NewUserType }) {
+  const currentUser = await getCurrentUser();
+  if (!user?.admin || !user?.name || !user?.password) {
+    return null;
+  }
+  if (currentUser?.admin) {
+    const encryptedPassword = await encryptPassword(user.password);
+    const newUser = await prisma.user.create({
+      data: {
+        name: user.name,
+        password: encryptedPassword,
+        admin: user.admin,
+      },
+    });
+
+    return newUser;
   }
 }
