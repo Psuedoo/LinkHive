@@ -12,6 +12,8 @@ import {
   DropdownMenuSeparator,
   DropdownMenuLabel,
 } from "@/components/ui/dropdown-menu";
+import Image from "next/image";
+import LinkHiveLogoComponent from "@/public/LinkHiveLogo";
 
 function NavbarButton({ func, children }: { func: any; children: any }) {
   return (
@@ -99,7 +101,7 @@ export default function Navbar(props: any) {
     <div className="flex flex-row place-content-evenly h-20 bg-background">
       <div className="flex items-center place-content-between w-5/6">
         <NextLink href="/">
-          <h1 className="text-text">LinkHive</h1>
+          <LinkHiveLogoComponent width={150} className="fill-foreground" />
         </NextLink>
         <div className="flex justify-center items-center">
           <ModeToggle />
