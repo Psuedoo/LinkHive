@@ -26,7 +26,7 @@ function Link({ link }: { link: Link }) {
           <ContextMenu>
             <ContextMenuTrigger>
               <Button
-                className="transition duration-250 ease-in-out transform hover:-translate-y-1 hover:scale-110"
+                className="transition duration-250 ease-in-out transform hover:-translate-y-1 hover:scale-110 m-2"
                 asChild
               >
                 <NextLink href={link.url}>{link.title}</NextLink>
@@ -54,5 +54,7 @@ export function LinksGrid({ links }: { links: Link[] }) {
     <Link key={link.id} link={link} />
   ));
 
-  return <div className="flex">{linkComponents}</div>;
+  return (
+    <div className="grid grid-flow-col auto-cols-max">{linkComponents}</div>
+  );
 }

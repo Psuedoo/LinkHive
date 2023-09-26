@@ -33,8 +33,9 @@ export function SearchBar() {
   }
 
   return (
-    <div className="flex w-full max-w-md items-center space-x-2">
+    <div className="flex w-full items-center space-x-2">
       <Input
+        className="w-full"
         type="email"
         placeholder="Search"
         value={search}
