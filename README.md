@@ -1,11 +1,13 @@
-<h1 align="center">LinkHive</h2>
+![LinkHive Logo](/public/LinkHive.png)
 <p align="center">Self-hosted bookmark manager.</p>
+
 
 ### Contents
 - [Contents](#contents)
 - [About LinkHive](#about-linkhive)
 - [Setup](#setup)
 - [Local Development Setup](#local-development-setup)
+- [To dockerize the application](#to-dockerize-the-application)
 - [Features](#features)
 - [Roadmap](#roadmap)
 
