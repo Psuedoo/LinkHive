@@ -16,7 +16,6 @@ export default async function Home() {
     <main className="flex w-screen flex-col items-center">
       <div className="flex flex-col w-2/3 pt-20">
         <SearchBar />
-        <Separator className="mt-5 mb-5" />
         <LinksGrid links={links} />
         {user ? <CreateLinkButton /> : <></>}
       </div>

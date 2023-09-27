@@ -13,8 +13,7 @@ import {
   ContextMenuItem,
 } from "@/components/ui/context-menu";
 import { Dialog, DialogTrigger } from "@/components/ui/dialog";
-import { AlertDialog } from "@/components/ui/alert-dialog";
-import { AlertDialogTrigger } from "@radix-ui/react-alert-dialog";
+import { AlertDialog, AlertDialogTrigger } from "@/components/ui/alert-dialog";
 
 function Link({ link }: { link: Link }) {
   const [open, setOpen] = useState(false);
@@ -26,10 +25,12 @@ function Link({ link }: { link: Link }) {
           <ContextMenu>
             <ContextMenuTrigger>
               <Button
-                className="transition duration-250 ease-in-out transform hover:-translate-y-1 hover:scale-110 m-2"
+                className="break-all text-ellipsis overflow-hidden transition duration-250 ease-in-out transform hover:-translate-y-1 hover:scale-110 m-2"
                 asChild
               >
-                <NextLink href={link.url}>{link.title}</NextLink>
+                <NextLink href={link.url}>
+                  <p>{link.title}</p>
+                </NextLink>
               </Button>
             </ContextMenuTrigger>
             <ContextMenuContent>
@@ -55,6 +56,18 @@ export function LinksGrid({ links }: { links: Link[] }) {
   ));
 
   return (
-    <div className="grid grid-flow-col auto-cols-max">{linkComponents}</div>
+    <>
+      <div className="relative mt-5">
+        <div className="absolute inset-0 flex items-center">
+          <span className="w-full border-t" />
+        </div>
+        <div className="relative flex justify-center text-xs">
+          <span className="bg-background px-2 text-muted-foreground uppercase">
+            links
+          </span>
+        </div>
+      </div>
+      <div className="flex flex-wrap justify-center">{linkComponents}</div>
+    </>
   );
 }
