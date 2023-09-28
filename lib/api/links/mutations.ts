@@ -69,7 +69,7 @@ type NewUserType = Pick<User, "name" | "password" | "admin">;
 
 export async function createUser({ user }: { user: NewUserType }) {
   const currentUser = await getCurrentUser();
-  if (!user?.admin || !user?.name || !user?.password) {
+  if (user?.admin == undefined || !user?.name || !user?.password) {
     return null;
   }
   if (currentUser?.admin) {
