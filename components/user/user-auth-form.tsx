@@ -37,13 +37,12 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
   });
 
   const onSubmit = (data: z.infer<typeof formSchema>) => {
-    console.log("data", data);
     setIsLoading(true);
 
     signIn("credentials", {
       username: data.username,
       password: data.password,
-      callbackUrl: "/",
+      callbackUrl: `/${data.username}`,
     });
 
     setTimeout(() => {

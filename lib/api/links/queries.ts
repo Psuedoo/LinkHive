@@ -2,25 +2,28 @@
 import { prisma } from "@/lib/prisma";
 import { getCurrentUser } from "@/lib/session";
 
-export async function getLinks() {
+// TODO: Would be awesome to not need a second DB call
+export async function getLinks(slug: string = "admin") {
   const user = await getCurrentUser();
   let links = [];
+  const publicLinks = await prisma.link.findMany({
+    where: {
+      authRequired: false,
+      User: { name: slug },
+    },
+  });
 
-  const userId = user?.id;
-  if (userId) {
-    const user = await prisma.user.findUnique({
-      where: { id: userId },
-    });
+  links.push(...publicLinks);
 
-    links = await prisma.link.findMany({
-      where: { userId: user?.id },
+  if (user?.name == slug) {
+    const privateLinks = await prisma.link.findMany({
+      where: {
+        authRequired: true,
+        User: { name: slug },
+      },
     });
-
-    return links;
-  } else {
-    links = await prisma.link.findMany({
-      where: { authRequired: false },
-    });
-    return links;
+    links.push(...privateLinks);
   }
+
+  return links;
 }
