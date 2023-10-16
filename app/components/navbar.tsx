@@ -12,7 +12,6 @@ import {
   DropdownMenuSeparator,
   DropdownMenuLabel,
 } from "@/components/ui/dropdown-menu";
-import Image from "next/image";
 import LinkHiveLogoComponent from "@/public/LinkHiveLogo";
 
 function NavbarButton({ func, children }: { func: any; children: any }) {
@@ -67,12 +66,14 @@ export default function Navbar(props: any) {
       <>
         <DropdownMenu>
           <DropdownMenuTrigger>
-            <Avatar>
-              <AvatarImage src={props.user.image} />
-              <AvatarFallback>
-                <AvatarIcon />
-              </AvatarFallback>
-            </Avatar>
+            <div className="flex justify-center items-center">
+              <Avatar>
+                <AvatarImage src={props.user.image} />
+                <AvatarFallback>
+                  <AvatarIcon />
+                </AvatarFallback>
+              </Avatar>
+            </div>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>{props.user.name}</DropdownMenuLabel>
@@ -98,9 +99,9 @@ export default function Navbar(props: any) {
     );
   }
   return (
-    <div className="flex flex-row place-content-evenly h-20 bg-background">
+    <div className="flex flex-row place-content-evenly h-20 bg-background border border-b-secondary">
       <div className="flex items-center place-content-between w-5/6">
-        <NextLink href="/">
+        <NextLink href={`/${props.user?.name || ""}`}>
           <LinkHiveLogoComponent width={150} className="fill-foreground" />
         </NextLink>
         <div className="flex justify-center items-center">

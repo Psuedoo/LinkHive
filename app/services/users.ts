@@ -13,10 +13,7 @@ export const encryptPassword = async (password: string) => {
   return hash;
 };
 
-export const verifyPassword = async (
-  password: string | null,
-  hash: string | null
-) => {
+export const verifyPassword = async (password: string, hash: string) => {
   if (!password || !hash) return false;
 
   try {

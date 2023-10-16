@@ -1,4 +1,4 @@
-import LinkPage from "./components/linkPage";
+import LinkPage from "../components/linkPage";
 
 export const dynamic = "force-dynamic";
 

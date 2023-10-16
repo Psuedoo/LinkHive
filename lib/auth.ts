@@ -60,7 +60,7 @@ export const authOptions: NextAuthOptions = {
           },
         });
 
-        if (user) {
+        if (user && user.password) {
           const isPasswordValid = await verifyPassword(
             credentials.password,
             user.password
