@@ -32,6 +32,13 @@ The following command runs LinkHive on port 3000. Feel free to update/change thi
 docker compose up -d
 ```
 
+The default login:
+
+- Username: `admin`
+- Password: `admin`
+
+After logging in, I recommend changing the password.
+
 # Local Development Setup
 
 Will update these instructions cleaner if/when it becomes a higher priority.
