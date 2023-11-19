@@ -1,20 +1,32 @@
-# Stage 1: Build the application
-FROM node:16 as build
+FROM node:lts-buster-slim AS base
+RUN apt-get update && apt-get install libssl-dev ca-certificates -y
 WORKDIR /app
+
 COPY package*.json ./
+
+FROM base as build
 RUN npm install
+
 COPY . .
 RUN npx prisma generate
-RUN npx prisma db push 
+RUN npx prisma db push
 RUN npx prisma db seed
 
-# stage 2: Copy the application
-FROM node:16-alpine
-WORKDIR /app
+RUN npm run build
 
-ENV NEXTAUTH_URL=http://localhost:3000
-ENV NEXTAUTH_SECRET=say_lalisa_love_me_lalisa_love_me_hey
+FROM base as prod-build
 
-COPY --from=build /app .
+RUN npm install --production
+COPY prisma prisma
+RUN npx prisma generate
+RUN cp -R node_modules prod_node_modules
+
+FROM base as prod
+
+COPY --from=prod-build /app/prod_node_modules /app/node_modules
+COPY --from=build  /app/.next /app/.next
+COPY --from=build  /app/public /app/public
+COPY --from=build  /app/prisma /app/prisma
+
 EXPOSE 3000
-CMD ["npm", "run", "dev"]
+CMD ["npm", "run", "start"]

@@ -11,10 +11,6 @@ import {
 } from "@/components/ui/dialog";
 import { DialogTrigger } from "@radix-ui/react-dialog";
 import CreateLinkForm from "@/components/link/createForm";
-import {
-  Container,
-  Button as FloatingButton,
-} from "react-floating-action-button";
 import { Plus } from "lucide-react";
 
 export function CreateLinkButton() {
@@ -24,12 +20,11 @@ export function CreateLinkButton() {
     <>
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogTrigger asChild>
+          {/* TODO: Move this button to the bottom right corner */}
           <div>
-            <Container>
-              <Button variant="outline" className="rounded-full">
-                <Plus className="text-muted-foreground" />
-              </Button>
-            </Container>
+            <Button variant="outline" className="rounded-full">
+              <Plus className="text-muted-foreground" />
+            </Button>
           </div>
         </DialogTrigger>
         <DialogContent className="sm:max-w-[425px]">
