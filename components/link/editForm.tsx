@@ -54,6 +54,7 @@ export default function EditLinkForm({
         title: data.title,
         url: data.url,
         authRequired: data.authRequired,
+        userName: link.userName,
       },
     });
     toast({

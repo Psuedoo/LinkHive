@@ -1,0 +1,10 @@
+version: "3"
+
+services:
+  linkhive:
+    container_name: linkhive
+    build: .
+    ports:
+      - "3000:3000"
+    env_file:
+      - .env

@@ -11,6 +11,7 @@ import {
 } from "@/components/ui/dialog";
 import { DialogTrigger } from "@radix-ui/react-dialog";
 import CreateLinkForm from "@/components/link/createForm";
+import { Plus } from "lucide-react";
 
 export function CreateLinkButton() {
   const formId = "create-link-form";
@@ -19,7 +20,12 @@ export function CreateLinkButton() {
     <>
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogTrigger asChild>
-          <Button>Create New Link</Button>
+          {/* TODO: Move this button to the bottom right corner */}
+          <div>
+            <Button variant="outline" className="rounded-full">
+              <Plus className="text-muted-foreground" />
+            </Button>
+          </div>
         </DialogTrigger>
         <DialogContent className="sm:max-w-[425px]">
           <DialogHeader>
@@ -27,7 +33,6 @@ export function CreateLinkButton() {
           </DialogHeader>
           <CreateLinkForm formId={formId} open={open} setOpen={setOpen} />
           <DialogFooter>
-            {/* TODO: Change this to floating button */}
             <Button type="submit" form={formId}>
               Create Link
             </Button>

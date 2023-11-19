@@ -5,11 +5,12 @@ import { prisma } from "@/lib/prisma";
 import { encryptPassword } from "@/app/services/users";
 
 type UpdateLinkInput = Omit<Link, "userId">;
-type CreateLinkInput = Omit<Link, "id" | "userId">;
+type CreateLinkInput = Omit<Link, "id" | "userId" | "userName">;
 
 export async function createLink(link: CreateLinkInput) {
   const user = await getCurrentUser();
   const userId = user?.id;
+  const userName = user?.name;
   if (userId) {
     const user = await prisma.user.findUnique({
       where: { id: userId },
@@ -18,6 +19,7 @@ export async function createLink(link: CreateLinkInput) {
     const newLink = await prisma.link.create({
       data: {
         ...link,
+        userName: userName,
         User: {
           connect: {
             id: userId,
@@ -69,7 +71,7 @@ type NewUserType = Pick<User, "name" | "password" | "admin">;
 
 export async function createUser({ user }: { user: NewUserType }) {
   const currentUser = await getCurrentUser();
-  if (!user?.admin || !user?.name || !user?.password) {
+  if (user?.admin == undefined || !user?.name || !user?.password) {
     return null;
   }
   if (currentUser?.admin) {

@@ -1,48 +1,54 @@
-<h1 align="center">LinkHive</h2>
-<p align="center">Self-hosted bookmark manager.</p>
+![LinkHive Logo](/public/LinkHive.png)
 
-### Contents
-- [Contents](#contents)
+<p align="center">Self-hosted bookmark manager</p>
+
+# Table of Contents
+
+- [Table of Contents](#table-of-contents)
 - [About LinkHive](#about-linkhive)
-- [Setup](#setup)
+- [Running LinkHive](#running-linkhive)
+  - [Setup](#setup)
+  - [Docker](#docker)
 - [Local Development Setup](#local-development-setup)
-- [Features](#features)
 - [Roadmap](#roadmap)
 
-### About LinkHive
+# About LinkHive
+
 LinkHive is a self-hosted bookmark manager built with NextJS.
 
-### Setup
-Currently LinkHive is still in development and not suggested in any way to be used in production.
-### Local Development Setup
+# Running LinkHive
+
+## Setup
+
+1. Clone the repo with
+   `git clone https://github.com/psuedoo/linkhive`
+2. Create a `.env` file with the contents in `.env.example` and change to suit your needs. After doing this you should be free to run with one of the below options.
+
+## Docker
+
+The following command runs LinkHive on port 3000. Feel free to update/change this in `docker-compose.yml`.
+
+```bash
+docker compose up -d
+```
+
+# Local Development Setup
+
 Will update these instructions cleaner if/when it becomes a higher priority.
 
 This is a ReactJS app using NextJS. So you'll need all of the dependencies that come along with that.
 
 There also might need to be some prep that involves Prisma. Maybe running `npx prisma db push` and `npx prisma db seed`?
 
-Create a `.env` containing:
-```
-NEXTAUTH_URL=http://localhost:3000
-NEXTAUTH_SECRET=say_lalisa_love_me_lalisa_love_me_hey
-```
+1. Create a `.env` with information from `.env.example`.
 
-Run `npm run dev`
+2. Run `npm run dev`
 
+# Roadmap
 
-### To dockerize the application 
-```
-docker build -t linkhive-app .
-docker run -p 3000:3000 linkhive-app
-```
-
-### Features
-- You can have bookmarked links
-
-### Roadmap
 - [x] CRUD operations on links
 - [x] Navigation
 - [x] Docker support
-- [ ] Multi-user support
+- [x] Multi-user support
 - [ ] Hexagonal links
 - [ ] Status checking for links
