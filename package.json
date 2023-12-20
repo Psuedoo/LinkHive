@@ -48,7 +48,7 @@
     "zod": "^3.22.2"
   },
   "devDependencies": {
-    "@types/bcryptjs": "^2.4.4",
+    "@types/bcryptjs": "^2.4.6",
     "@types/node": "^20.8.10",
     "axios": "^1.5.0",
     "prisma": "^5.2.0",
