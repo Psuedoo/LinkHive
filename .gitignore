@@ -36,3 +36,7 @@ next-env.d.ts
 
 prisma/dev.db
 .env
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/
