@@ -13,19 +13,16 @@ import { DialogTrigger } from "@radix-ui/react-dialog";
 import CreateLinkForm from "@/components/link/createForm";
 import { Plus } from "lucide-react";
 
-export function CreateLinkButton() {
+export function CreateLinkDialog() {
   const formId = "create-link-form";
   const [open, setOpen] = useState(false);
   return (
     <>
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogTrigger asChild>
-          {/* TODO: Move this button to the bottom right corner */}
-          <div>
-            <Button variant="outline" className="rounded-full">
-              <Plus className="text-muted-foreground" />
-            </Button>
-          </div>
+          <Button variant="outline" className="rounded-full">
+            <Plus className="text-muted-foreground" />
+          </Button>
         </DialogTrigger>
         <DialogContent className="sm:max-w-[425px]">
           <DialogHeader>

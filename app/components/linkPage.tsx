@@ -1,4 +1,4 @@
-import { CreateLinkButton } from "@/app/components/createLinks";
+import { CreateLinkDialog } from "@/app/components/createLinks";
 import { LinksGrid } from "@/app/components/links";
 import { getCurrentUser } from "@/lib/session";
 import { getLinks } from "@/lib/api/links/queries";
@@ -18,7 +18,9 @@ export default async function LinkPage({
       <div className="flex flex-col w-2/3 pt-20">
         <SearchBar />
         <LinksGrid links={links} user={user} />
-        {user ? <CreateLinkButton /> : <></>}
+        <div id="create-link-button" className="fixed inset-x-auto bottom-10 right-10 mb-4 mr-4">
+          {user ? <CreateLinkDialog /> : <></>}
+        </div>
       </div>
     </main>
   );
